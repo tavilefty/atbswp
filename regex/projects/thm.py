@@ -11,14 +11,18 @@ import pyperclip
 postStr = '.p.thmlabs.com'
 proto = 'http://'
 
+
+''' Does IP -> URL conversion.'''
 def actual_work(str):
     cleansed = ip.replace('.', '-')
     output = proto + cleansed + postStr
     pyperclip.copy(output)
     print('Done: ' + output)
 
+
+''' An added check to see if the IP is valid.'''
 def ip_sanity(ip):
-    subnet_reg = r'\d{1,3}'
+    subnet_reg = r'\d{1,3}' # Defines an octet. More precisely any number with 1-3 digit i.e. 0-999.
     result = re.findall(subnet_reg, ip)
             
     # Check if there are exactly 4 parts and each part is a valid subnet (0-255)
@@ -29,7 +33,7 @@ def ip_sanity(ip):
         return False
         
 
-ip_pattern = r'^(\d{1,3}.){3}\d{1,3}$'
+ip_pattern = r'^(\d{1,3}.){3}\d{1,3}$'    # Salute my genuises. Its a rough fatal regex for an IP. 
 
 ip = pyperclip.paste()
 
