@@ -1,17 +1,42 @@
-'''
-To-do
-1. Take value from the clipboard in DD/MM/YY format. Don't do any sanity check.
-2. Store the strings in variables like day, month and year.
-3. Add code to validate the date (and month).
-
-April, June, September and November have 30 days,
-February has 28 days, 29 on a leap year.
-
-A leap year will be
-a. Divisible by 400.
-b. Divibible by 400 but not by 100.
-c. Divisible by 4 but not by 100.
-'''
-
 import re
+import pyperclip
+
+pattern = r'\d{2}/\d{2}/\d{4}'  # A pattern for date in DD/MM/YYYY format.
+clipboard = pyperclip.paste()
+
+def get_date(clipboard):
+    return re.findall(pattern, clipboard)
+
+def is_leap_year(year):
+    # Leap year rules
+    return (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0)
+
+def date_sanity(date_str):
+    day, month, year = map(int, date_str.split('/'))
+
+    # Check month validity (1-12)
+    if month < 1 or month > 12:
+        return False
+
+    # Check day validity based on the month.
+    if month in {4, 6, 9, 11}:  # Small months
+        return 1 <= day <= 30
+    elif month == 2:  # February
+        if is_leap_year(year):
+            return 1 <= day <= 29
+        else:
+            return 1 <= day <= 28
+    else:  # Big months
+        return 1 <= day <= 31
+
+''' Main Function '''
+dates = get_date(clipboard)
+
+if dates:
+    print("Dates:")
+    for date in dates:
+        if date_sanity(date):
+            print(date)
+else:
+    print('No valid dates found.')
 
