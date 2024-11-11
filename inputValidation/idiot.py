@@ -5,5 +5,5 @@ while True:
     response = pyip.inputYesNo(prompt)
 
     if response == 'no':
-        print('Exactly. Have a nice day :)')
         break
+print('Exactly. Have a nice day :)')
